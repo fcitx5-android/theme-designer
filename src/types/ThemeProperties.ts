@@ -92,3 +92,9 @@ export function rgba2int32(rgba: string): number {
     return view.getInt32(0);
 }
 
+export function normalizeThemeProperties(raw: RawThemeProperties) {
+    return Object.fromEntries(
+        Object.entries(raw).map(([k, v]) => [k, typeof v === 'number' ? int32torgba(v) : v])
+    ) as ThemeProperties;
+}
+

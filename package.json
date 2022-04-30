@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "material-design-icons-iconfont": "^6.7.0",
     "vue": "^3.2.25"
   },
   "devDependencies": {
