@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { PunctuationPosition, ThemePreference } from './types/ThemePreference';
 import { normalizeThemeProperties, ThemeProperties, uint2int32 } from './types/ThemeProperties';
 
@@ -8,6 +10,7 @@ import { TextKeyboard } from './layouts';
 
 import KawaiiBar from './components/KawaiiBar.vue';
 import KeyboardWindow from './components/KeyboardWindow.vue';
+import ThemeEditor from './components/ThemeEditor.vue';
 
 const preference = ref<ThemePreference>({
     border: true,
@@ -18,7 +21,7 @@ const preference = ref<ThemePreference>({
 });
 
 const theme = ref<ThemeProperties>(normalizeThemeProperties({
-    name: 'PixelDark',
+    name: uuidv4(),
     backgroundColor: uint2int32(0xff2d2d2d),
     barColor: uint2int32(0xff373737),
     keyboardColor: uint2int32(0xff2d2d2d),
@@ -43,6 +46,9 @@ const theme = ref<ThemeProperties>(normalizeThemeProperties({
             <KawaiiBar :preference="preference" :theme="theme"></KawaiiBar>
             <KeyboardWindow :preference="preference" :layout="TextKeyboard" :theme="theme"></KeyboardWindow>
         </div>
+    </div>
+    <div class="form">
+        <ThemeEditor v-model="theme" @import="importTheme" @export="exportTheme"></ThemeEditor>
     </div>
 </template>
 
