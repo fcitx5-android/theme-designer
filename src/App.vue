@@ -10,6 +10,7 @@ import { TextKeyboard } from './layouts';
 
 import KawaiiBar from './components/KawaiiBar.vue';
 import KeyboardWindow from './components/KeyboardWindow.vue';
+import PreferenceEditor from './components/PreferenceEditor.vue';
 import ThemeEditor from './components/ThemeEditor.vue';
 
 const preference = ref<ThemePreference>({
@@ -46,6 +47,7 @@ const theme = ref<ThemeProperties>(normalizeThemeProperties({
             <KawaiiBar :preference="preference" :theme="theme"></KawaiiBar>
             <KeyboardWindow :preference="preference" :layout="TextKeyboard" :theme="theme"></KeyboardWindow>
         </div>
+        <PreferenceEditor v-model="preference"></PreferenceEditor>
     </div>
     <div class="form">
         <ThemeEditor v-model="theme" @import="importTheme" @export="exportTheme"></ThemeEditor>
