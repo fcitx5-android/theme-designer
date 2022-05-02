@@ -98,3 +98,29 @@ export function normalizeThemeProperties(raw: RawThemeProperties) {
     ) as ThemeProperties;
 }
 
+export function isHexColor(val: any) {
+    if (typeof val !== 'string') return false;
+    return /^#[0-9a-fA-F]{8}/.test(val);
+}
+
+export function serializeThemeProperties(theme: ThemeProperties) {
+    const raw = Object.fromEntries(
+        Object.entries(theme).map(([k, v]) => [k, isHexColor(v) ? rgba2int32(v) : v])
+    ) as RawThemeProperties;
+    if (!Object.hasOwn(raw, 'backgroundImage')) {
+        // @ts-ignore
+        raw.backgroundImage = null;
+        // raw.backgroundImage = {
+        //     croppedFilePath: '/dummy',
+        //     srcFilePath: '/dummy',
+        //     brightness: 42,
+        //     cropRect: {
+        //         top: 0,
+        //         right: 42,
+        //         bottom: 42,
+        //         left: 0
+        //     }
+        // };
+    };
+    return raw;
+}

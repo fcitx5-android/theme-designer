@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PunctuationPosition, ThemePreference } from './types/ThemePreference';
-import { normalizeThemeProperties, ThemeProperties, uint2int32 } from './types/ThemeProperties';
+import { normalizeThemeProperties, serializeThemeProperties, ThemeProperties, uint2int32 } from './types/ThemeProperties';
 
 import { TextKeyboard } from './layouts';
 
@@ -39,6 +39,44 @@ const theme = ref<ThemeProperties>(normalizeThemeProperties({
     clipboardEntryColor: uint2int32(0xff464646),
     isDark: true
 }));
+
+const file = ref<HTMLInputElement>();
+
+const importTheme = () => file.value?.click();
+
+const onFileInputChange = (e: Event) => {
+    const file = (e.target as HTMLInputElement)?.files?.[0];
+    if (!file) return;
+    if (!file.name.endsWith('.json')) {
+        alert('Invalid file type. Must be *.json');
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => {
+        const str = e.target?.result as string;
+        try {
+            const json = JSON.parse(str);
+            theme.value = normalizeThemeProperties(json);
+        } catch {
+            alert('Malformated file content. Must be JSON string.');
+        }
+    };
+    reader.readAsText(file);
+};
+
+const exportTheme = () => {
+    const json = JSON.stringify(serializeThemeProperties(theme.value));
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    const a: HTMLAnchorElement = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${theme.value.name}.json`;
+    const onClick = () => {
+        a.onclick = null;
+        Promise.resolve().then(() => URL.revokeObjectURL(a.href));
+    };
+    a.onclick = onClick;
+    a.click();
+}
 </script>
 
 <template>
@@ -52,6 +90,7 @@ const theme = ref<ThemeProperties>(normalizeThemeProperties({
     <div class="form">
         <ThemeEditor v-model="theme" @import="importTheme" @export="exportTheme"></ThemeEditor>
     </div>
+    <input type="file" ref="file" style="display:none" @change="onFileInputChange">
 </template>
 
 <style>
