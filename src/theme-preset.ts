@@ -28,7 +28,7 @@ export const PixelDark = makePreset('PixelDark', true, {
     clipboardEntryColor: 0xff464646,
 });
 
-export const PixelLight = makePreset('PixelLight', true, {
+export const PixelLight = makePreset('PixelLight', false, {
     backgroundColor: 0xffeeeeee,
     barColor: 0xffeeeeee,
     keyboardColor: 0xfffafafa,
