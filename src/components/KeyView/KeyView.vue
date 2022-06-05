@@ -95,8 +95,8 @@ const highlightStyle = computed<StyleValue>(() => {
 <template>
     <div class="keyview" :style="keyStyles" @mousedown="pressed = true" @mouseup="pressed = false">
         <div class="keyview__bg" :style="bkgStyle"></div>
-        <div class="keyview__highlight" :style="highlightStyle"></div>
         <component :preference="preference" :appearance="appearance" :theme="theme"></component>
+        <div class="keyview__highlight" :style="highlightStyle"></div>
     </div>
 </template>
 
