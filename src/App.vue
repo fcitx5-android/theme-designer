@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import JSZip from 'jszip';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PunctuationPosition, ThemePreference } from './types/ThemePreference';
@@ -12,6 +12,8 @@ import KawaiiBar from './components/KawaiiBar.vue';
 import KeyboardWindow from './components/KeyboardWindow.vue';
 import PreferenceEditor from './components/PreferenceEditor.vue';
 import ThemeEditor from './components/ThemeEditor.vue';
+
+import { readFileAs, saveBlobAs } from './utils/file-operations';
 
 const preference = ref<ThemePreference>({
     border: true,
@@ -44,38 +46,39 @@ const file = ref<HTMLInputElement>();
 
 const importTheme = () => file.value?.click();
 
-const onFileInputChange = (e: Event) => {
+const onFileInputChange = async (e: Event) => {
     const file = (e.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
-    if (!file.name.endsWith('.json')) {
-        alert('Invalid file type. Must be *.json');
+    let str = '';
+    if (file.name.endsWith('.json')) {
+        str = await readFileAs<string>(file, (reader, file) => reader.readAsText(file));
+    } else if (file.name.endsWith('.zip')) {
+        const buffer = await readFileAs<ArrayBuffer>(file, (reader, file) => reader.readAsArrayBuffer(file));
+        const zip = new JSZip();
+        await zip.loadAsync(buffer);
+        const jsonFile = zip.file(/[^/]+\.json$/).at(0);
+        if (!jsonFile) {
+            alert('Cannot find theme file under root directory.');
+            return;
+        }
+        str = await jsonFile.async('string');
+    } else {
+        alert('Invalid file type! Must be either ".json" or ".zip".');
         return;
     }
-    const reader = new FileReader();
-    reader.onload = e => {
-        const str = e.target?.result as string;
-        try {
-            const json = JSON.parse(str);
-            theme.value = normalizeThemeProperties(json);
-        } catch {
-            alert('Malformated file content. Must be JSON string.');
-        }
-    };
-    reader.readAsText(file);
+    try {
+        const json = JSON.parse(str);
+        theme.value = normalizeThemeProperties(json);
+    } catch {
+        alert('Malformated file content. Must be JSON string.');
+    }
 };
 
-const exportTheme = () => {
-    const json = JSON.stringify(serializeThemeProperties(theme.value));
-    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
-    const a: HTMLAnchorElement = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `${theme.value.name}.json`;
-    const onClick = () => {
-        a.onclick = null;
-        Promise.resolve().then(() => URL.revokeObjectURL(a.href));
-    };
-    a.onclick = onClick;
-    a.click();
+const exportTheme = async () => {
+    const zip = new JSZip();
+    zip.file(`${theme.value.name}.json`, JSON.stringify(serializeThemeProperties(theme.value)));
+    const blob = await zip.generateAsync({ type: 'blob' })
+    saveBlobAs(blob, `${theme.value.name}.zip`);
 }
 </script>
 
