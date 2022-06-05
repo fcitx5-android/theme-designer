@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-import { provide } from 'vue';
+import { computed, reactive, ref, provide } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPicker } from 'vue-color-kit';
 import 'vue-color-kit/dist/vue-color-kit.css'
 
 import { ThemeProperties, ThemePropertyType, ThemePropertiesTypes } from '../types/ThemeProperties';
+import { PixelDark, PixelLight } from '../theme-preset';
 import { FormItemType } from './FormItem/FormItem';
 
 import FormItem from './FormItem/FormItem.vue';
@@ -23,6 +24,26 @@ const emit = defineEmits<{
     (event: 'export'): void
     (event: 'update:modelValue', value: ThemeProperties): void
 }>();
+
+const Presets = [
+    PixelDark,
+    PixelLight
+];
+
+const loadPreset = (preset: ThemeProperties) => {
+    emit('update:modelValue', {
+        ...preset,
+        name: uuidv4()
+    });
+};
+
+const onSelectPreset = (e: Event) => {
+    const selected = (e.target as HTMLSelectElement).value;
+    const preset = Presets.find(p => p.name === selected);
+    if (!preset) return;
+    if (!confirm(`Override editing theme with preset "${selected}"?`)) return;
+    loadPreset(preset);
+}
 
 const EntryType = {
     [ThemePropertyType.Unknown]: null,
@@ -92,6 +113,14 @@ const closeColorPicker = () => {
     <div class="theme-editor">
         <table>
             <tbody>
+                <tr>
+                    <th>Load Preset</th>
+                    <td>
+                        <select :value="''" @input="onSelectPreset">
+                            <option v-for="p of Presets" :value="p.name">{{ p.name }}</option>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th colspan="2">Theme</th>
                 </tr>

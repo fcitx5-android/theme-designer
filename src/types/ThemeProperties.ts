@@ -85,6 +85,11 @@ export function int32torgba(colorInt: number): string {
     return `#${rgba}`;
 }
 
+export function uint32torgba(uint: number): string {
+    const str = uint.toString(16).padStart(8, '0');
+    return `#${str.substring(2, 7)}${str.substring(0, 1)}`;
+}
+
 export function rgba2int32(rgba: string): number {
     const argb = rgba.substring(7, 9) + rgba.substring(1, 7);
     const uint32 = Number.parseInt(argb, 16);

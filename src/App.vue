@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { PunctuationPosition, ThemePreference } from './types/ThemePreference';
 import { normalizeThemeProperties, serializeThemeProperties, ThemeProperties, uint2int32 } from './types/ThemeProperties';
+import { PixelDark } from './theme-preset';
 
 import { TextKeyboard } from './layouts';
 
@@ -23,24 +24,7 @@ const preference = ref<ThemePreference>({
     puncPosition: PunctuationPosition.Bottom
 });
 
-const theme = ref<ThemeProperties>(normalizeThemeProperties({
-    name: uuidv4(),
-    backgroundColor: uint2int32(0xff2d2d2d),
-    barColor: uint2int32(0xff373737),
-    keyboardColor: uint2int32(0xff2d2d2d),
-    keyBackgroundColor: uint2int32(0xff464646),
-    keyTextColor: uint2int32(0xfffafafa),
-    altKeyBackgroundColor: uint2int32(0xff373737),
-    altKeyTextColor: uint2int32(0xffacacac),
-    accentKeyBackgroundColor: uint2int32(0xff5e97f6),
-    accentKeyTextColor: uint2int32(0xffffffff),
-    keyPressHighlightColor: uint2int32(0x33ffffff),
-    keyShadowColor: uint2int32(0xff252525),
-    spaceBarColor: uint2int32(0xff4a4a4a),
-    dividerColor: uint2int32(0x1fffffff),
-    clipboardEntryColor: uint2int32(0xff464646),
-    isDark: true
-}));
+const theme = ref<ThemeProperties>({ ...PixelDark, name: uuidv4() });
 
 const file = ref<HTMLInputElement>();
 
