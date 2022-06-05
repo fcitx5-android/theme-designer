@@ -16,7 +16,7 @@ import ThemeEditor from './components/ThemeEditor.vue';
 import { readFileAs, saveBlobAs } from './utils/file-operations';
 
 const preference = ref<ThemePreference>({
-    border: true,
+    border: false,
     horizontalMargin: 3,
     verticalMargin: 7,
     radius: 4,
