@@ -74,6 +74,10 @@ export function uint2int32(colorInt: number): number {
     return view.getInt32(0);
 }
 
+/**
+ * @param colorInt 0xAARRGGBB
+ * @returns #RRGGBBAA
+ */
 export function int32torgba(colorInt: number): string {
     view.setInt32(0, colorInt);
     const rgba = [
@@ -85,11 +89,19 @@ export function int32torgba(colorInt: number): string {
     return `#${rgba}`;
 }
 
+/**
+ * @param uint 0xAARRGGBB
+ * @returns #RRGGBBAA
+ */
 export function uint32torgba(uint: number): string {
     const str = uint.toString(16).padStart(8, '0');
-    return `#${str.substring(2, 7)}${str.substring(0, 1)}`;
+    return `#${str.substring(2)}${str.substring(0, 2)}`;
 }
 
+/**
+ * @param rgba #RRGGBBAA
+ * @returns 0xAARRGGBB
+ */
 export function rgba2int32(rgba: string): number {
     const argb = rgba.substring(7, 9) + rgba.substring(1, 7);
     const uint32 = Number.parseInt(argb, 16);
