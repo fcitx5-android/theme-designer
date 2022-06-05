@@ -1,5 +1,5 @@
 {
     "[vue]": {
-        "editor.defaultFormatter": "johnsoncodehk.volar"
+        "editor.defaultFormatter": "Vue.volar"
     }
 }
