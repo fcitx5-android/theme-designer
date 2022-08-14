@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import JSZip from 'jszip';
+
 import { v4 as uuidv4 } from 'uuid';
+import UZIP from 'uzip';
 
 import { PunctuationPosition, ThemePreference } from './types/ThemePreference';
 import { normalizeThemeProperties, serializeThemeProperties, ThemeProperties, uint2int32 } from './types/ThemeProperties';
@@ -30,6 +31,8 @@ const file = ref<HTMLInputElement>();
 
 const importTheme = () => file.value?.click();
 
+const textDecoder = new TextDecoder();
+
 const onFileInputChange = async (e: Event) => {
     const file = (e.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
@@ -38,14 +41,13 @@ const onFileInputChange = async (e: Event) => {
         str = await readFileAs<string>(file, (reader, file) => reader.readAsText(file));
     } else if (file.name.endsWith('.zip')) {
         const buffer = await readFileAs<ArrayBuffer>(file, (reader, file) => reader.readAsArrayBuffer(file));
-        const zip = new JSZip();
-        await zip.loadAsync(buffer);
-        const jsonFile = zip.file(/[^/]+\.json$/).at(0);
+        const zip = UZIP.parse(buffer);
+        const jsonFile = Object.keys(zip).find(k => k.endsWith('.json'));
         if (!jsonFile) {
             alert('Cannot find theme file under root directory.');
             return;
         }
-        str = await jsonFile.async('string');
+        str = textDecoder.decode(zip[jsonFile]);
     } else {
         alert('Invalid file type! Must be either ".json" or ".zip".');
         return;
@@ -58,10 +60,14 @@ const onFileInputChange = async (e: Event) => {
     }
 };
 
+const textEncoder = new TextEncoder();
+
 const exportTheme = async () => {
-    const zip = new JSZip();
-    zip.file(`${theme.value.name}.json`, JSON.stringify(serializeThemeProperties(theme.value)));
-    const blob = await zip.generateAsync({ type: 'blob' })
+    const json = JSON.stringify(serializeThemeProperties(theme.value));
+    const zip = UZIP.encode({
+        [`${theme.value.name}.json`]: textEncoder.encode(json)
+    });
+    const blob = new Blob([zip], { type: 'application/zip' });
     saveBlobAs(blob, `${theme.value.name}.zip`);
 }
 </script>
