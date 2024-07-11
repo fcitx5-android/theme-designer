@@ -10,15 +10,21 @@ const emit = defineEmits<{
     update: [value: string]
 }>();
 
-const newUUID = () => emit('update', uuidv4())
+const newUUID = (e: MouseEvent) => {
+    if ((e as PointerEvent).pointerType === '') { // clicked on the <label>
+        emit('update', uuidv4());
+    } 
+}
 </script>
 
 <template>
-    <span :id="name" v-text="value" @click="newUUID"></span>
+    <input type="text" :id="name" :value="value" @click="newUUID"></input>
 </template>
 
 <style scoped>
-span {
+input {
     font-family: monospace;
+    /* UUID is 36 chars long */
+    width: 36ch;
 }
 </style>

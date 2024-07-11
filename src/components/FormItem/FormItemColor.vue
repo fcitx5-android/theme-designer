@@ -22,12 +22,14 @@ const onColorSampleClick = () => {
 </script>
 
 <template>
-    <div class="form-item-color__sample" :id="name" @click="onColorSampleClick"></div>
+    <button :id="name" @click="onColorSampleClick"></button>
 </template>
 
-<style>
-.form-item-color__sample {
+<style scoped>
+button {
     background-color: v-bind(value);
+    display: block;
+    border: none;
     height: 24px;
     width: 40px;
 }
