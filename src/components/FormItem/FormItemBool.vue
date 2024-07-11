@@ -5,10 +5,10 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'update:value', value: boolean): void
+    update: [value: boolean]
 }>();
 
-const onCheckboxInput = (e: Event) => emit('update:value', (e.target as HTMLInputElement).checked);
+const onCheckboxInput = (e: Event) => emit('update', (e.target as HTMLInputElement).checked);
 </script>
 
 <template>

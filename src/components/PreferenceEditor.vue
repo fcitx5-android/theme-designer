@@ -10,9 +10,7 @@ const props = defineProps<{
     modelValue: ThemePreference
 }>();
 
-const emit = defineEmits<{
-    (event: 'update:modelValue', value: ThemePreference): void
-}>();
+const model = defineModel<ThemePreference>()
 
 const EntryType = {
     [ThemePreferenceType.Boolean]: FormItemType.Bool,
@@ -31,7 +29,12 @@ const entries = computed(() => {
     return result;
 });
 
-const onPropUpdate = (k: string, v: boolean | string) => emit('update:modelValue', { ...props.modelValue, [k]: v });
+const onPropUpdate = (k: string, v: boolean | string) => {
+    model.value = {
+        ...props.modelValue,
+        [k]: v
+    }
+};
 </script>
 
 <template>
@@ -42,7 +45,7 @@ const onPropUpdate = (k: string, v: boolean | string) => emit('update:modelValue
                     <th colspan="2">Preference</th>
                 </tr>
                 <template v-for="item of entries" :key="item.name">
-                    <FormItem v-bind="item" @update:value="onPropUpdate"></FormItem>
+                    <FormItem v-bind="item" @update="onPropUpdate"></FormItem>
                 </template>
             </tbody>
         </table>

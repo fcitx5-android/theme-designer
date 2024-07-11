@@ -20,10 +20,11 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'import'): void
-    (event: 'export'): void
-    (event: 'update:modelValue', value: ThemeProperties): void
+    import: [],
+    export: []
 }>();
+
+const model = defineModel<ThemeProperties>()
 
 const Presets = [
     PixelDark,
@@ -31,10 +32,10 @@ const Presets = [
 ];
 
 const loadPreset = (preset: ThemeProperties) => {
-    emit('update:modelValue', {
+    model.value = {
         ...preset,
         name: uuidv4()
-    });
+    };
 };
 
 const onSelectPreset = (e: Event) => {
@@ -45,7 +46,7 @@ const onSelectPreset = (e: Event) => {
     loadPreset(preset);
 }
 
-const EntryType = {
+const EntryType: Record<ThemePropertyType, FormItemType | null> = {
     [ThemePropertyType.Unknown]: null,
     [ThemePropertyType.Boolean]: FormItemType.Bool,
     [ThemePropertyType.Color]: FormItemType.Color,
@@ -55,14 +56,20 @@ const EntryType = {
 const entries = computed(() => {
     const result = [];
     for (const [name, value] of Object.entries(props.modelValue)) {
-        const type = EntryType[ThemePropertiesTypes[name]];
+        // @ts-ignore
+        const type: FormItemType | null = EntryType[ThemePropertiesTypes[name]];
         if (type === null) continue;
         result.push({ name, type, value });
     }
     return result;
 });
 
-const onPropUpdate = (k: string, v: boolean | string) => emit('update:modelValue', { ...props.modelValue, [k]: v });
+const onPropUpdate = (k: string, v: boolean | string) => {
+    model.value = {
+        ...props.modelValue,
+        [k]: v
+    }
+};
 
 const colorPicker = ref<typeof ColorPicker.methods>();
 
@@ -125,7 +132,7 @@ const closeColorPicker = () => {
                     <th colspan="2">Theme</th>
                 </tr>
                 <template v-for="item of entries" :key="item.name">
-                    <FormItem v-if="item.type !== null" v-bind="item" @update:value="onPropUpdate"></FormItem>
+                    <FormItem v-if="item.type !== null" v-bind="item" @update="onPropUpdate"></FormItem>
                 </template>
                 <tr>
                     <th></th>

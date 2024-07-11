@@ -7,10 +7,10 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'update:value', value: string): void
+    update: [value: string]
 }>();
 
-const newUUID = () => emit('update:value', uuidv4())
+const newUUID = () => emit('update', uuidv4())
 </script>
 
 <template>

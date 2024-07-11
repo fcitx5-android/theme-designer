@@ -5,10 +5,10 @@ const { name, value } = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'update:value', value: number): void
+    update: [value: number]
 }>();
 
-const onTextInput = (e: Event) => emit('update:value', Number.parseInt((e.target as HTMLInputElement).value, 10));
+const onTextInput = (e: Event) => emit('update', Number.parseInt((e.target as HTMLInputElement).value, 10));
 </script>
 
 <template>

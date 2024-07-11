@@ -9,12 +9,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'update:value', value: string): void
+    update: [value: string]
 }>();
 
 const openColorPicker = inject<FnOpenColorPicker>('openColorPicker') ?? (() => { });
 
-const onColorChange = (color: string) => emit('update:value', color);
+const onColorChange = (color: string) => emit('update', color);
 
 const onColorSampleClick = () => {
     openColorPicker(props.name, props.value, onColorChange)
