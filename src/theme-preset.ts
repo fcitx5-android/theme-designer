@@ -1,9 +1,9 @@
 import { RawThemeProperties, ThemeProperties, uint32torgba } from "./types/ThemeProperties";
 
-type ColorProperties = Omit<RawThemeProperties, 'name' | 'isDark' | 'backgroundImage'>;
+type ColorProperties = Omit<RawThemeProperties, 'version' | 'name' | 'isDark' | 'backgroundImage'>;
 
 function makePreset(name: string, isDark: boolean, properties: ColorProperties): ThemeProperties {
-    const theme: Partial<ThemeProperties> = { name, isDark };
+    const theme: Partial<ThemeProperties> = { version: '2.0', name, isDark };
     for (const [k, v] of Object.entries(properties)) {
         // @ts-ignore
         theme[k] = uint32torgba(v);
@@ -23,9 +23,13 @@ export const PixelDark = makePreset('PixelDark', true, {
     accentKeyTextColor: 0xffffffff,
     keyPressHighlightColor: 0x33ffffff,
     keyShadowColor: 0xff252525,
+    popupBackgroundColor: 0xff373737,
+    popupTextColor: 0xfffafafa,
     spaceBarColor: 0xff4a4a4a,
     dividerColor: 0x1fffffff,
     clipboardEntryColor: 0xff464646,
+    genericActiveBackgroundColor: 0xff5e97f6,
+    genericActiveForegroundColor: 0xfffafafa,
 });
 
 export const PixelLight = makePreset('PixelLight', false, {
@@ -40,7 +44,11 @@ export const PixelLight = makePreset('PixelLight', false, {
     accentKeyTextColor: 0xffffffff,
     keyPressHighlightColor: 0x1f000000,
     keyShadowColor: 0xffc2c2c2,
+    popupBackgroundColor: 0xffeeeeee,
+    popupTextColor: 0xff212121,
     spaceBarColor: 0xffdbdbdb,
     dividerColor: 0x1f000000,
     clipboardEntryColor: 0xffffffff,
+    genericActiveBackgroundColor: 0xff5e97f6,
+    genericActiveForegroundColor: 0xffffffff,
 });

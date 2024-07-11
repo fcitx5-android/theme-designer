@@ -1,42 +1,41 @@
 export interface RawThemeProperties {
+    version: string;
     name: string;
+
     // TODO: theme background image
     backgroundImage?: unknown;
+
     backgroundColor: number;
     barColor: number;
     keyboardColor: number;
+
     keyBackgroundColor: number;
     keyTextColor: number;
+
     altKeyBackgroundColor: number;
     altKeyTextColor: number;
+
     accentKeyBackgroundColor: number;
     accentKeyTextColor: number;
+
     keyPressHighlightColor: number;
     keyShadowColor: number;
+
+    popupBackgroundColor: number;
+    popupTextColor: number;
+
     spaceBarColor: number;
     dividerColor: number;
     clipboardEntryColor: number;
+
+    genericActiveBackgroundColor: number;
+    genericActiveForegroundColor: number;
+
     isDark: boolean;
 }
 
-export interface ThemeProperties {
-    name: string;
-    backgroundImage?: unknown;
-    backgroundColor: string;
-    barColor: string;
-    keyboardColor: string;
-    keyBackgroundColor: string;
-    keyTextColor: string;
-    altKeyBackgroundColor: string;
-    altKeyTextColor: string;
-    accentKeyBackgroundColor: string;
-    accentKeyTextColor: string;
-    keyPressHighlightColor: string;
-    keyShadowColor: string;
-    spaceBarColor: string;
-    dividerColor: string;
-    clipboardEntryColor: string;
-    isDark: boolean;
+export type ThemeProperties = {
+    [k in keyof RawThemeProperties]: RawThemeProperties[k] extends number ? string : RawThemeProperties[k];
 }
 
 export enum ThemePropertyType {
@@ -46,7 +45,10 @@ export enum ThemePropertyType {
     Boolean
 }
 
-export const ThemePropertiesTypes: Record<string, ThemePropertyType> = {
+export const ThemePropertiesTypes: {
+    [k in keyof RawThemeProperties]: ThemePropertyType;
+} = {
+    version: ThemePropertyType.Unknown,
     name: ThemePropertyType.UUID,
     backgroundImage: ThemePropertyType.Unknown,
     backgroundColor: ThemePropertyType.Color,
@@ -60,9 +62,13 @@ export const ThemePropertiesTypes: Record<string, ThemePropertyType> = {
     accentKeyTextColor: ThemePropertyType.Color,
     keyPressHighlightColor: ThemePropertyType.Color,
     keyShadowColor: ThemePropertyType.Color,
+    popupBackgroundColor: ThemePropertyType.Color,
+    popupTextColor: ThemePropertyType.Color,
     spaceBarColor: ThemePropertyType.Color,
     dividerColor: ThemePropertyType.Color,
     clipboardEntryColor: ThemePropertyType.Color,
+    genericActiveBackgroundColor: ThemePropertyType.Color,
+    genericActiveForegroundColor: ThemePropertyType.Color,
     isDark: ThemePropertyType.Boolean
 }
 
@@ -115,17 +121,18 @@ export function normalizeThemeProperties(raw: RawThemeProperties) {
     ) as ThemeProperties;
 }
 
-export function isHexColor(val: any) {
-    if (typeof val !== 'string') return false;
-    return /^#[0-9a-fA-F]{8}/.test(val);
+export function isHexColor(val: unknown): val is string {
+    if (typeof val === 'string') {
+        return /^#[0-9a-fA-F]{8}/.test(val);
+    }
+    return false;
 }
 
 export function serializeThemeProperties(theme: ThemeProperties) {
     const raw = Object.fromEntries(
         Object.entries(theme).map(([k, v]) => [k, isHexColor(v) ? rgba2int32(v) : v])
-    ) as RawThemeProperties;
+    ) as unknown as RawThemeProperties;
     if (!Object.hasOwn(raw, 'backgroundImage')) {
-        // @ts-ignore
         raw.backgroundImage = null;
         // raw.backgroundImage = {
         //     croppedFilePath: '/dummy',
