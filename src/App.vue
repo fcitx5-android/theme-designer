@@ -87,14 +87,20 @@ const exportTheme = async () => {
 </template>
 
 <style>
+body {
+    margin: 0; /* Content fills 100% width on phone. */
+}
+
 .kbd {
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px 50px;
+    margin-bottom: 20px;
 }
 
 .input-view {
     height: 270px;
     width: 360px;
-    margin: 0 50px 20px 0;
     display: flex;
     flex-direction: column;
 }
