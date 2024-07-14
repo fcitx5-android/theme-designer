@@ -70,7 +70,7 @@ export const ThemePropertiesTypes: {
     genericActiveBackgroundColor: ThemePropertyType.Color,
     genericActiveForegroundColor: ThemePropertyType.Color,
     isDark: ThemePropertyType.Boolean
-}
+};
 
 const buffer = new ArrayBuffer(4);
 const view = new DataView(buffer);

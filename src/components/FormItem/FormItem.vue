@@ -10,30 +10,33 @@ import NumberForm from './FormItemNumber.vue';
 import TextForm from './FormItemText.vue';
 import UUIDForm from './FormItemUUID.vue';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FormValueType = any;
+
 const props = defineProps<{
     name: string;
     type: FormItemType;
-    value: any;
+    value: FormValueType;
 }>();
 
 const emit = defineEmits<{
-    update: [name: string, value: any]
+    update: [name: string, value: FormValueType]
 }>();
 
-const onValueUpdate = (v: any) => emit('update', props.name, v);
+const onValueUpdate = (v: FormValueType) => emit('update', props.name, v);
 
 interface FormItemProps {
     name: string;
-    value: any;
+    value: FormValueType;
 }
 
-let component: Component<FormItemProps> = TextForm;
+let formType: Component<FormItemProps> = TextForm;
 switch (props.type) {
-    case FormItemType.Bool: component = BoolForm; break;
-    case FormItemType.Color: component = ColorForm; break;
-    case FormItemType.Enum: component = EnumForm; break;
-    case FormItemType.Number: component = NumberForm; break;
-    case FormItemType.UUID: component = UUIDForm; break;
+    case FormItemType.Bool: formType = BoolForm; break;
+    case FormItemType.Color: formType = ColorForm; break;
+    case FormItemType.Enum: formType = EnumForm; break;
+    case FormItemType.Number: formType = NumberForm; break;
+    case FormItemType.UUID: formType = UUIDForm; break;
 }
 </script>
 
@@ -43,7 +46,7 @@ switch (props.type) {
             <label :for="name" v-text="name"></label>
         </th>
         <td>
-            <component :name="name" :value="value" @update="onValueUpdate"></component>
+            <component :is="formType" :name="name" :value="value" @update="onValueUpdate" />
         </td>
     </tr>
 </template>

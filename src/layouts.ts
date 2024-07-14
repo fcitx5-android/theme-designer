@@ -70,7 +70,7 @@ function ImageKey(
         viewId,
         // img
         src
-    }
+    };
 }
 
 export const TextKeyboard: KeyAppearance[][] = [
@@ -116,4 +116,4 @@ export const TextKeyboard: KeyAppearance[][] = [
         AlphabetKey(',', '.', KeyAppearanceVariant.Alternative),
         ImageKey(KeyImageResource.Return, KeyViewId.Return, KeyAppearanceVariant.Accent, 15, true)
     ]
-]
+];

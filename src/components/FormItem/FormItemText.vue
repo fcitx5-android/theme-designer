@@ -12,7 +12,7 @@ const onTextInput = (e: Event) => emit('update', (e.target as HTMLInputElement).
 </script>
 
 <template>
-    <input type="text" :id="name" :value="value" @input="onTextInput">
+    <input :id="name" type="text" :value="value" @input="onTextInput">
 </template>
 
 <style>

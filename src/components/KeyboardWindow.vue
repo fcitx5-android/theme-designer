@@ -22,7 +22,7 @@ const keyboardStyle = computed<StyleValue>(() => ({
 <template>
     <div class="keyboard" :style="keyboardStyle">
         <div v-for="(keyRow, rowIndex) of layout" :key="rowIndex" class="keyrow">
-            <KeyView v-for="(key, keyIndex) of keyRow" :key="`row${rowIndex}key${keyIndex}`" :preference="preference" :appearance="key" :theme="theme"></KeyView>
+            <KeyView v-for="(key, keyIndex) of keyRow" :key="`row${rowIndex}key${keyIndex}`" :preference="preference" :appearance="key" :theme="theme" />
         </div>
     </div>
 </template>

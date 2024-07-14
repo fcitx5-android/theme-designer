@@ -21,6 +21,8 @@ const fgColor = computed(() => {
             return props.theme.altKeyTextColor;
         case KeyAppearanceVariant.Accent:
             return props.theme.accentKeyTextColor;
+        default:
+            return props.theme.keyTextColor;
     }
 });
 
@@ -38,6 +40,8 @@ const altFgColor = computed(() => {
             return props.theme.altKeyTextColor;
         case KeyAppearanceVariant.Accent:
             return props.theme.accentKeyTextColor;
+        default:
+            return props.theme.altKeyTextColor;
     }
 });
 
@@ -50,6 +54,6 @@ const altTextStyle = computed<StyleValue>(() => ({
 </script>
 
 <template>
-    <div class="keyview__fg" v-text="appearance.displayText" :style="mainTextStyle"></div>
-    <div class="keyview__fg" v-text="appearance.altText" :style="altTextStyle"></div>
+    <div class="keyview__fg" :style="mainTextStyle" v-text="appearance.displayText"></div>
+    <div class="keyview__fg" :style="altTextStyle" v-text="appearance.altText"></div>
 </template>

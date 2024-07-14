@@ -30,7 +30,7 @@ const ComponentType = {
     [KeyAppearanceType.Image]: KeyViewImage
 };
 
-const component = computed<Component<KeyViewProps>>(() => ComponentType[props.appearance.type]);
+const appearanceType = computed<Component<KeyViewProps>>(() => ComponentType[props.appearance.type]);
 
 const bkgStyle = computed<StyleValue>(() => {
     const { preference, appearance, theme } = props;
@@ -66,6 +66,8 @@ const bkgStyle = computed<StyleValue>(() => {
                 return theme.altKeyBackgroundColor;
             case KeyAppearanceVariant.Accent:
                 return theme.accentKeyBackgroundColor;
+            default:
+                return theme.keyBackgroundColor;
         }
     });
     return {
@@ -88,14 +90,14 @@ const highlightStyle = computed<StyleValue>(() => {
         bottom: `${preference.verticalMargin}px`,
         left: `${preference.horizontalMargin}px`,
         borderRadius: preference.border ? `${preference.radius}px` : '0'
-    }
+    };
 });
 </script>
 
 <template>
     <div class="keyview" :style="keyStyles" @mousedown="pressed = true" @mouseup="pressed = false">
         <div class="keyview__bg" :style="bkgStyle"></div>
-        <component :preference="preference" :appearance="appearance" :theme="theme"></component>
+        <component :is="appearanceType" :preference="preference" :appearance="appearance" :theme="theme" />
         <div class="keyview__highlight" :style="highlightStyle"></div>
     </div>
 </template>

@@ -13,9 +13,16 @@ export function readFileAs<T>(file: File, read: (reader: FileReader, file: File)
     const reader = new FileReader();
     return new Promise((resolve) => {
         reader.onload = e => {
-            // @ts-ignore
-            resolve(e.target.result as T);
+            resolve(e.target!.result as T);
         };
         read(reader, file);
     });
+}
+
+export function readFileAsString(file: File): Promise<string> {
+    return readFileAs<string>(file, (reader, f) => reader.readAsText(f));
+}
+
+export function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
+    return readFileAs<ArrayBuffer>(file, (reader, f) => reader.readAsArrayBuffer(f));
 }

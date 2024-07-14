@@ -3,7 +3,7 @@ import { computed, reactive, ref, provide } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPicker } from 'vue-color-kit';
-import 'vue-color-kit/dist/vue-color-kit.css'
+import 'vue-color-kit/dist/vue-color-kit.css';
 
 import { ThemeProperties, ThemePropertyType, ThemePropertiesTypes } from '../types/ThemeProperties';
 import { PixelDark, PixelLight } from '../theme-preset';
@@ -24,7 +24,7 @@ const emit = defineEmits<{
     export: []
 }>();
 
-const model = defineModel<ThemeProperties>()
+const model = defineModel<ThemeProperties>();
 
 const Presets = [
     PixelDark,
@@ -44,7 +44,7 @@ const onSelectPreset = (e: Event) => {
     if (!preset) return;
     if (!confirm(`Override editing theme with preset "${selected}"?`)) return;
     loadPreset(preset);
-}
+};
 
 const EntryType: Record<ThemePropertyType, FormItemType | null> = {
     [ThemePropertyType.Unknown]: null,
@@ -56,7 +56,7 @@ const EntryType: Record<ThemePropertyType, FormItemType | null> = {
 const entries = computed(() => {
     const result = [];
     for (const [name, value] of Object.entries(props.modelValue)) {
-        // @ts-ignore
+        // @ts-expect-error Object.entries returns unknown ¯\_(ツ)_/¯
         const type: FormItemType | null = EntryType[ThemePropertiesTypes[name]];
         if (type === null) continue;
         result.push({ name, type, value });
@@ -68,7 +68,7 @@ const onPropUpdate = (k: string, v: boolean | string) => {
     model.value = {
         ...props.modelValue,
         [k]: v
-    }
+    };
 };
 
 const colorPicker = ref<typeof ColorPicker.methods>();
@@ -83,6 +83,7 @@ interface ColorPickerResult {
 const picker = reactive({
     name: '',
     open: false,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onChange: (color: string) => { }
 });
 
@@ -91,7 +92,7 @@ const onColorPickerChange = (color: ColorPickerResult) => {
     const { r, g, b, a } = color.rgba;
     const hex = [r, g, b, Math.round(a * 0xff)].map(i => i.toString(16).padStart(2, '0')).join('');
     picker.onChange(`#${hex}`);
-}
+};
 
 function hexa2rgba(hexa: string) {
     const r = Number.parseInt(hexa.substring(1, 3), 0x10);
@@ -113,7 +114,7 @@ provide<FnOpenColorPicker>('openColorPicker', openColorPicker);
 const closeColorPicker = () => {
     picker.open = false;
     picker.onChange = () => { };
-}
+};
 </script>
 
 <template>
@@ -124,15 +125,19 @@ const closeColorPicker = () => {
                     <th>Load Preset</th>
                     <td>
                         <select :value="''" @input="onSelectPreset">
-                            <option v-for="p of Presets" :value="p.name">{{ p.name }}</option>
+                            <option v-for="p of Presets" :key="p.name" :value="p.name">
+                                {{ p.name }}
+                            </option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="2">Theme</th>
+                    <th colspan="2">
+                        Theme
+                    </th>
                 </tr>
                 <template v-for="item of entries" :key="item.name">
-                    <FormItem v-if="item.type !== null" v-bind="item" @update="onPropUpdate"></FormItem>
+                    <FormItem v-if="item.type !== null" v-bind="item" @update="onPropUpdate" />
                 </template>
                 <tr>
                     <th></th>
@@ -144,7 +149,7 @@ const closeColorPicker = () => {
                 </tr>
             </tbody>
         </table>
-        <div class="color-picker" v-show="picker.open">
+        <div v-show="picker.open" class="color-picker">
             <table class="color-picker__title">
                 <tbody>
                     <tr>
@@ -153,7 +158,7 @@ const closeColorPicker = () => {
                     </tr>
                 </tbody>
             </table>
-            <ColorPicker ref="colorPicker" theme="light" @changeColor="onColorPickerChange"></ColorPicker>
+            <ColorPicker ref="colorPicker" theme="light" @change-color="onColorPickerChange" />
             <input class="color-picker__close" type="button" value="Close" @click="closeColorPicker">
         </div>
     </div>

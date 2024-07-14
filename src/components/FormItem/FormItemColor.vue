@@ -17,7 +17,7 @@ const openColorPicker = inject<FnOpenColorPicker>('openColorPicker') ?? (() => {
 const onColorChange = (color: string) => emit('update', color);
 
 const onColorSampleClick = () => {
-    openColorPicker(props.name, props.value, onColorChange)
+    openColorPicker(props.name, props.value, onColorChange);
 };
 </script>
 

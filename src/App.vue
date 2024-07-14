@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import UZIP from 'uzip';
 
 import { PunctuationPosition, ThemePreference } from './types/ThemePreference';
-import { normalizeThemeProperties, serializeThemeProperties, ThemeProperties, uint2int32 } from './types/ThemeProperties';
+import { normalizeThemeProperties, serializeThemeProperties, ThemeProperties } from './types/ThemeProperties';
 import { PixelDark } from './theme-preset';
 
 import { TextKeyboard } from './layouts';
@@ -15,7 +15,7 @@ import KeyboardWindow from './components/KeyboardWindow.vue';
 import PreferenceEditor from './components/PreferenceEditor.vue';
 import ThemeEditor from './components/ThemeEditor.vue';
 
-import { readFileAs, saveBlobAs } from './utils/file-operations';
+import { readFileAsArrayBuffer, readFileAsString, saveBlobAs } from './utils/file-operations';
 
 const preference = ref<ThemePreference>({
     border: false,
@@ -38,9 +38,9 @@ const onFileInputChange = async (e: Event) => {
     if (!file) return;
     let str = '';
     if (file.name.endsWith('.json')) {
-        str = await readFileAs<string>(file, (reader, file) => reader.readAsText(file));
+        str = await readFileAsString(file);
     } else if (file.name.endsWith('.zip')) {
-        const buffer = await readFileAs<ArrayBuffer>(file, (reader, file) => reader.readAsArrayBuffer(file));
+        const buffer = await readFileAsArrayBuffer(file);
         const zip = UZIP.parse(buffer);
         const jsonFile = Object.keys(zip).find(k => k.endsWith('.json'));
         if (!jsonFile) {
@@ -69,21 +69,21 @@ const exportTheme = async () => {
     });
     const blob = new Blob([zip], { type: 'application/zip' });
     saveBlobAs(blob, `${theme.value.name}.zip`);
-}
+};
 </script>
 
 <template>
     <div class="kbd">
         <div class="input-view">
-            <KawaiiBar :preference="preference" :theme="theme"></KawaiiBar>
-            <KeyboardWindow :preference="preference" :layout="TextKeyboard" :theme="theme"></KeyboardWindow>
+            <KawaiiBar :preference="preference" :theme="theme" />
+            <KeyboardWindow :preference="preference" :layout="TextKeyboard" :theme="theme" />
         </div>
-        <PreferenceEditor v-model="preference"></PreferenceEditor>
+        <PreferenceEditor v-model="preference" />
     </div>
     <div class="form">
-        <ThemeEditor v-model="theme" @import="importTheme" @export="exportTheme"></ThemeEditor>
+        <ThemeEditor v-model="theme" @import="importTheme" @export="exportTheme" />
     </div>
-    <input type="file" ref="file" style="display:none" @change="onFileInputChange">
+    <input ref="file" type="file" style="display:none" @change="onFileInputChange">
 </template>
 
 <style>

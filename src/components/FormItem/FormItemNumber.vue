@@ -12,7 +12,7 @@ const onTextInput = (e: Event) => emit('update', Number.parseFloat((e.target as 
 </script>
 
 <template>
-    <input type="number" :id="name" :value="value" @input="onTextInput">
+    <input :id="name" type="number" :value="value" @input="onTextInput">
 </template>
 
 <style>

@@ -12,7 +12,7 @@ const onTextInput = (e: Event) => emit('update', Number.parseInt((e.target as HT
 </script>
 
 <template>
-    <input type="text" :id="name" :value="value" @input="onTextInput">
+    <input :id="name" type="text" :value="value" @input="onTextInput">
 </template>
 
 <style scoped>

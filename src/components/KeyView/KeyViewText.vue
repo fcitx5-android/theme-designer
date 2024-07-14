@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from '@vue/reactivity';
-import type { StyleValue } from 'vue';
+import { computed, type StyleValue } from 'vue';
 
 import { KeyTextTypeface, KeyAppearanceVariant, KeyAppearanceAltText } from '../../types/KeyDef';
 import { ThemePreference } from '../../types/ThemePreference';
@@ -21,6 +20,8 @@ const fgColor = computed(() => {
             return props.theme.altKeyTextColor;
         case KeyAppearanceVariant.Accent:
             return props.theme.accentKeyTextColor;
+        default:
+            return props.theme.keyTextColor;
     }
 });
 
@@ -32,5 +33,5 @@ const fgStyle = computed<StyleValue>(() => ({
 </script>
 
 <template>
-    <div class="keyview__fg" v-text="appearance.displayText" :style="fgStyle"></div>
+    <div class="keyview__fg" :style="fgStyle" v-text="appearance.displayText"></div>
 </template>

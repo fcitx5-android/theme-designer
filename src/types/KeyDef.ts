@@ -39,7 +39,7 @@ export const KeyImageResourceIcon = {
     [KeyImageResource.LangSwitch]: 'language',
     [KeyImageResource.Return]: 'keyboard_return',
     [KeyImageResource.MiniSpace]: 'space_bar'
-}
+};
 
 export enum KeyAppearanceType {
     Text,

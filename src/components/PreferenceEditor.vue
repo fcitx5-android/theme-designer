@@ -10,7 +10,7 @@ const props = defineProps<{
     modelValue: ThemePreference
 }>();
 
-const model = defineModel<ThemePreference>()
+const model = defineModel<ThemePreference>();
 
 const EntryType = {
     [ThemePreferenceType.Boolean]: FormItemType.Bool,
@@ -33,7 +33,7 @@ const onPropUpdate = (k: string, v: boolean | string) => {
     model.value = {
         ...props.modelValue,
         [k]: v
-    }
+    };
 };
 </script>
 
@@ -45,7 +45,7 @@ const onPropUpdate = (k: string, v: boolean | string) => {
                     <th colspan="2">Preference</th>
                 </tr>
                 <template v-for="item of entries" :key="item.name">
-                    <FormItem v-bind="item" @update="onPropUpdate"></FormItem>
+                    <FormItem v-bind="item" @update="onPropUpdate" />
                 </template>
             </tbody>
         </table>

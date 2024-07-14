@@ -5,7 +5,7 @@ type ColorProperties = Omit<RawThemeProperties, 'version' | 'name' | 'isDark' | 
 function makePreset(name: string, isDark: boolean, properties: ColorProperties): ThemeProperties {
     const theme: Partial<ThemeProperties> = { version: '2.0', name, isDark };
     for (const [k, v] of Object.entries(properties)) {
-        // @ts-ignore
+        // @ts-expect-error Object.entries is the best wtf
         theme[k] = uint32torgba(v);
     }
     return theme as ThemeProperties;

@@ -14,11 +14,11 @@ const newUUID = (e: MouseEvent) => {
     if ((e as PointerEvent).pointerType === '') { // clicked on the <label>
         emit('update', uuidv4());
     } 
-}
+};
 </script>
 
 <template>
-    <input type="text" :id="name" :value="value" @click="newUUID"></input>
+    <input :id="name" type="text" :value="value" @click="newUUID">
 </template>
 
 <style scoped>

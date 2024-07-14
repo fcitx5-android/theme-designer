@@ -12,7 +12,7 @@ const onCheckboxInput = (e: Event) => emit('update', (e.target as HTMLInputEleme
 </script>
 
 <template>
-    <input type="checkbox" :id="name" :checked="value" @input="onCheckboxInput">
+    <input :id="name" type="checkbox" :checked="value" @input="onCheckboxInput">
 </template>
 
 <style>
