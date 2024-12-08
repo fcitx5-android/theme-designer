@@ -103,5 +103,6 @@ body {
     width: 360px;
     display: flex;
     flex-direction: column;
+    font-family: sans-serif; /* Android default */
 }
 </style>
