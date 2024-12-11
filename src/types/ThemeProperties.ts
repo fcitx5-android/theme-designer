@@ -12,6 +12,8 @@ export interface RawThemeProperties {
     keyBackgroundColor: number;
     keyTextColor: number;
 
+    candidateTextColor: number;
+
     altKeyBackgroundColor: number;
     altKeyTextColor: number;
 
@@ -56,6 +58,7 @@ export const ThemePropertiesTypes: {
     keyboardColor: ThemePropertyType.Color,
     keyBackgroundColor: ThemePropertyType.Color,
     keyTextColor: ThemePropertyType.Color,
+    candidateTextColor: ThemePropertyType.Color,
     altKeyBackgroundColor: ThemePropertyType.Color,
     altKeyTextColor: ThemePropertyType.Color,
     accentKeyBackgroundColor: ThemePropertyType.Color,
@@ -145,6 +148,6 @@ export function serializeThemeProperties(theme: ThemeProperties) {
         //         left: 0
         //     }
         // };
-    };
+    }
     return raw;
 }
