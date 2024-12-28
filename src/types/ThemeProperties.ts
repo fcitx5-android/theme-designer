@@ -13,6 +13,8 @@ export interface RawThemeProperties {
     keyTextColor: number;
 
     candidateTextColor: number;
+    candidateLabelColor: number;
+    candidateCommentColor: number;
 
     altKeyBackgroundColor: number;
     altKeyTextColor: number;
@@ -59,6 +61,8 @@ export const ThemePropertiesTypes: {
     keyBackgroundColor: ThemePropertyType.Color,
     keyTextColor: ThemePropertyType.Color,
     candidateTextColor: ThemePropertyType.Color,
+    candidateLabelColor: ThemePropertyType.Color,
+    candidateCommentColor: ThemePropertyType.Color,
     altKeyBackgroundColor: ThemePropertyType.Color,
     altKeyTextColor: ThemePropertyType.Color,
     accentKeyBackgroundColor: ThemePropertyType.Color,
