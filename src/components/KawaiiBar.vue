@@ -5,8 +5,8 @@ import { ThemePreference } from '../types/ThemePreference';
 import { ThemeProperties } from '../types/ThemeProperties';
 
 const props = defineProps<{
-  preference: ThemePreference,
-  theme: ThemeProperties
+    preference: ThemePreference,
+    theme: ThemeProperties
 }>();
 
 const barColor = computed(() => props.preference.border ? props.theme.backgroundColor : props.theme.barColor);
@@ -15,16 +15,18 @@ const textColor = computed(() => props.theme.candidateTextColor);
 
 <template>
     <div class="bar">
-        <p>Hello world</p>
+        <span>你好世界</span>
     </div>
 </template>
 
 <style>
 .bar {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  background-color: v-bind(barColor);
-  color: v-bind(textColor);
+    display: flex;
+    align-items: center;
+    padding-inline: 10px;
+    height: 40px;
+    background-color: v-bind(barColor);
+    color: v-bind(textColor);
+    font-size: 20px;
 }
 </style>
