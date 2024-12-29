@@ -3,7 +3,7 @@ import { RawThemeProperties, ThemeProperties, uint32torgba } from "./types/Theme
 type ColorProperties = Omit<RawThemeProperties, 'version' | 'name' | 'isDark' | 'backgroundImage'>;
 
 function makePreset(name: string, isDark: boolean, properties: ColorProperties): ThemeProperties {
-    const theme: Partial<ThemeProperties> = { version: '2.0', name, isDark };
+    const theme: Partial<ThemeProperties> = { version: '2.1', name, isDark };
     for (const [k, v] of Object.entries(properties)) {
         // @ts-expect-error Object.entries is the best wtf
         theme[k] = uint32torgba(v);
