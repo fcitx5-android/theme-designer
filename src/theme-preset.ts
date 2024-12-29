@@ -1,4 +1,4 @@
-import { RawThemeProperties, ThemeProperties, uint32torgba } from "./types/ThemeProperties";
+import { RawThemeProperties, ThemeProperties, uint32torgba } from './types/ThemeProperties';
 
 type ColorProperties = Omit<RawThemeProperties, 'version' | 'name' | 'isDark' | 'backgroundImage'>;
 

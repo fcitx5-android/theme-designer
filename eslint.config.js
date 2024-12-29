@@ -6,7 +6,7 @@ import stylisticJs from '@stylistic/eslint-plugin-js';
 
 export default ts.config(
     {
-        ignores: ['dist', 'node_modules']
+        ignores: ['dist/']
     },
     js.configs.recommended,
     {
@@ -16,7 +16,9 @@ export default ts.config(
         },
         rules: {
             '@stylistic/js/semi': ['error', 'always'],
-            '@stylistic/js/indent': ['warn', 4, { 'SwitchCase': 1 }]
+            '@stylistic/js/quotes': ['error', 'single', { 'avoidEscape': true }],
+            '@stylistic/js/indent': ['warn', 4, { 'SwitchCase': 1 }],
+            '@stylistic/js/eol-last': ['warn', 'always']
         }
     },
     ...ts.configs.recommended,
@@ -51,11 +53,15 @@ export default ts.config(
         rules: {
             'vue/html-indent': ['warn', 4],
             'vue/max-attributes-per-line': ['error', {
-                'singleline': 128,
-                'multiline': 128
+                'singleline': { 'max': 128 },
+                'multiline': { 'max': 128 }
             }],
             'vue/html-self-closing': ['warn', {
-                'html': { 'normal': 'never' },
+                'html': {
+                    'void': 'never',
+                    'normal': 'never',
+                    'component': 'always'
+                },
                 'svg': 'never',
                 'math': 'never'
             }],

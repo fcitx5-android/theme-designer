@@ -99,7 +99,7 @@ export const TextKeyboard: KeyAppearance[][] = [
     ],
     [
         ImageKey(KeyImageResource.CapsLock, KeyViewId.CapsLock),
-        AlphabetKey('Z', `'`),
+        AlphabetKey('Z', "'"),
         AlphabetKey('X', ':'),
         AlphabetKey('C', '"'),
         AlphabetKey('V', '?'),
