@@ -18,6 +18,10 @@ interface KeyViewProps {
 
 const props = defineProps<KeyViewProps>();
 
+const emit = defineEmits<{
+    click: [key: KeyAppearance]
+}>();
+
 const keyStyles = computed<StyleValue>(() => ({
     flexBasis: `${props.appearance.percentWidth}%`
 }));
@@ -95,7 +99,13 @@ const highlightStyle = computed<StyleValue>(() => {
 </script>
 
 <template>
-    <div class="keyview" :style="keyStyles" @mousedown="pressed = true" @mouseup="pressed = false">
+    <div
+        class="keyview"
+        :style="keyStyles"
+        @mousedown="pressed = true"
+        @mouseup="pressed = false"
+        @click="emit('click', appearance)"
+    >
         <div class="keyview__bg" :style="bkgStyle"></div>
         <component :is="appearanceType" :preference="preference" :appearance="appearance" :theme="theme" />
         <div class="keyview__highlight" :style="highlightStyle"></div>

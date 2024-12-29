@@ -88,12 +88,12 @@ export const TextKeyboard: KeyAppearance[][] = [
     ],
     [
         AlphabetKey('A', '@'),
-        AlphabetKey('S', '`'),
-        AlphabetKey('D', '$'),
-        AlphabetKey('F', '_'),
-        AlphabetKey('G', '&'),
+        AlphabetKey('S', '*'),
+        AlphabetKey('D', '+'),
+        AlphabetKey('F', '-'),
+        AlphabetKey('G', '='),
         AlphabetKey('H', '/'),
-        AlphabetKey('J', ';'),
+        AlphabetKey('J', '#'),
         AlphabetKey('K', '('),
         AlphabetKey('L', ')')
     ],
@@ -110,10 +110,30 @@ export const TextKeyboard: KeyAppearance[][] = [
     ],
     [
         SymbolKey('?123', 15, KeyAppearanceVariant.Alternative, 16, KeyTextTypeface.Bold),
-        ImageKey(KeyImageResource.QuickPhrase, KeyViewId.QuickPhrase, KeyAppearanceVariant.Alternative, 10),
+        AlphabetKey(',', '', KeyAppearanceVariant.Alternative),
         ImageKey(KeyImageResource.LangSwitch, KeyViewId.LangSwitch, KeyAppearanceVariant.Normal, 10),
-        SymbolKey('拼音', 40, KeyAppearanceVariant.Normal, 13, KeyTextTypeface.Normal, true, KeyViewId.Space),
-        AlphabetKey(',', '.', KeyAppearanceVariant.Alternative),
+        SymbolKey('_', 40, KeyAppearanceVariant.Normal, 13, KeyTextTypeface.Normal, true, KeyViewId.Space),
+        AlphabetKey('.', '', KeyAppearanceVariant.Alternative),
         ImageKey(KeyImageResource.Return, KeyViewId.Return, KeyAppearanceVariant.Accent, 15, true)
     ]
 ];
+
+export const PunctuationMap: Record<string, string | undefined> = {
+    '.': '。',
+    ',': '，',
+    '?': '？',
+    '"': '“',
+    ':': '：',
+    ';': '；',
+    '\'': '‘',
+    '<': '《',
+    '>': '》',
+    '\\': '、',
+    '!': '！',
+    '$': '￥',
+    '^': '……',
+    '_': '——',
+    '(': '（',
+    ')': '）',
+    '~': '～',
+};

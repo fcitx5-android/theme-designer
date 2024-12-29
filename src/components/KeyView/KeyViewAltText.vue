@@ -47,6 +47,7 @@ const altFgColor = computed(() => {
 
 const altTextStyle = computed<StyleValue>(() => ({
     color: altFgColor.value,
+    lineHeight: '14px',
     fontSize: '10.7px',
     fontWeight: 'bold',
     transform: 'translateY(-2px)'
