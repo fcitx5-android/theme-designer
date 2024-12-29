@@ -10,21 +10,21 @@ const emit = defineEmits<{
     update: [value: string]
 }>();
 
-const newUUID = (e: MouseEvent) => {
-    const uuid = uuidv4();
-    emit('update', uuid);
+const newUUID = () => emit('update', uuidv4());
+
+const onClick = (e: MouseEvent) => {
     if ((e as PointerEvent).pointerType === '') { // clicked on the <label>
-        emit('update', uuidv4());
+        newUUID();
     }
 };
 
-const updateOnInput = (e: Event) => {
+const onInput = (e: Event) => {
     emit('update', (e.target as HTMLInputElement).value);
 };
 </script>
 
 <template>
-    <input :id="name" type="text" :value="value" @input="updateOnInput">
+    <input :id="name" type="text" :value="value" @click="onClick" @input="onInput">
     <button @click="newUUID">New UUID</button>
 </template>
 
