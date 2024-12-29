@@ -3,7 +3,7 @@ import { RawThemeProperties, ThemeProperties, uint32torgba } from "./types/Theme
 type ColorProperties = Omit<RawThemeProperties, 'version' | 'name' | 'isDark' | 'backgroundImage'>;
 
 function makePreset(name: string, isDark: boolean, properties: ColorProperties): ThemeProperties {
-    const theme: Partial<ThemeProperties> = { version: '2.0', name, isDark };
+    const theme: Partial<ThemeProperties> = { version: '2.1', name, isDark };
     for (const [k, v] of Object.entries(properties)) {
         // @ts-expect-error Object.entries is the best wtf
         theme[k] = uint32torgba(v);
@@ -17,6 +17,9 @@ export const PixelDark = makePreset('PixelDark', true, {
     keyboardColor: 0xff2d2d2d,
     keyBackgroundColor: 0xff464646,
     keyTextColor: 0xfffafafa,
+    candidateTextColor: 0xfffafafa,
+    candidateLabelColor: 0xfffafafa,
+    candidateCommentColor: 0xffacacac,
     altKeyBackgroundColor: 0xff373737,
     altKeyTextColor: 0xffacacac,
     accentKeyBackgroundColor: 0xff5e97f6,
@@ -38,6 +41,9 @@ export const PixelLight = makePreset('PixelLight', false, {
     keyboardColor: 0xfffafafa,
     keyBackgroundColor: 0xffffffff,
     keyTextColor: 0xff212121,
+    candidateTextColor: 0xff212121,
+    candidateLabelColor: 0xff212121,
+    candidateCommentColor: 0xff6e6e6e,
     altKeyBackgroundColor: 0xffe1e1e1,
     altKeyTextColor: 0xff6e6e6e,
     accentKeyBackgroundColor: 0xff4285f4,
